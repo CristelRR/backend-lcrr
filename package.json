@@ -2,13 +2,13 @@
   "name": "backend_lcrr",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -w",
-    "start": "node build/app.ts",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.ts\""
-},
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.ts\"",
+    "start": "node dist/app.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
