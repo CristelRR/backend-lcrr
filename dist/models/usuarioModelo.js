@@ -32,8 +32,8 @@ class UsuarioModelo {
     }
     update(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const update = "UPDATE tbl_usuario SET password:'" + usuario.password + "' WHERE email = '" + usuario.email + "'";
-            console.log("UPDATE " + this.update);
+            const update = "UPDATE tbl_usuario SET password='" + usuario.password + "' WHERE email = '" + usuario.email + "'";
+            console.log("UPDATE " + update);
             const result = yield connections_1.default.then((connection) => __awaiter(this, void 0, void 0, function* () {
                 return yield connection.query(update);
             }));
@@ -45,6 +45,14 @@ class UsuarioModelo {
             console.log('Eliminado');
             const result = yield connections_1.default.then((connection) => __awaiter(this, void 0, void 0, function* () {
                 return yield connection.query("DELETE FROM tbl_usuario WHERE email = ?", [email]);
+            }));
+            return result;
+        });
+    }
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield connections_1.default.then((connection) => __awaiter(this, void 0, void 0, function* () {
+                return yield connection.query("SELECT * FROM tbl_usuario WHERE email = ?", [email]);
             }));
             return result;
         });

@@ -18,8 +18,8 @@ class UsuarioModelo{
     }
 
     public async update(usuario: any){
-        const update = "UPDATE tbl_usuario SET password:'" + usuario.password + "' WHERE email = '" + usuario.email + "'";
-        console.log("UPDATE " + this.update)
+        const update = "UPDATE tbl_usuario SET password='" + usuario.password + "' WHERE email = '" + usuario.email + "'";
+        console.log("UPDATE " + update)
 
         const result = await pool.then(async (connection) =>{
             return await connection.query(update);
@@ -36,6 +36,14 @@ class UsuarioModelo{
         });
         return result;
     }
+
+    public async findByEmail(email: string) {
+        const result = await pool.then(async (connection) => {
+            return await connection.query("SELECT * FROM tbl_usuario WHERE email = ?", [email]);
+        });
+        return result;
+    }
+
 }
 
 const model = new UsuarioModelo();

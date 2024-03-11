@@ -8,25 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const connections_1 = __importDefault(require("../config/connections"));
-class AuthModels {
-    /*
-    * Método para buscar un usuario por username
-    */
-    getUserByEmail(email) {
+class Utils {
+    hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
-            let query = "SELECT * FROM tbl_usuario WHERE email='" + email + "'";
-            const result = yield connections_1.default.then((connection) => __awaiter(this, void 0, void 0, function* () {
-                return yield connection.query(query);
-            }));
-            return result;
+            const salt = yield bcript.genSaltSync(10);
+            return yield bcript.hashSync(password, salt);
         });
     }
 }
-const model = new AuthModels();
-exports.default = model;
-//# sourceMappingURL=authModels.js.map
+//# sourceMappingURL=utils.js.map
