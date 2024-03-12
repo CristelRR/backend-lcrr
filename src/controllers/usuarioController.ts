@@ -47,18 +47,23 @@ class UsuarioController {
     public async update(req: Request, res: Response) {
         try {
             const { email, password, role } = req.body;
-
+    
+            // Verificar si algún campo está vacío
+            if (validator.isEmpty(email.trim()) || validator.isEmpty(password.trim()) || validator.isEmpty(role.trim())) {
+                return res.status(400).json({ message: "Los campos no pueden estar vacíos", code: 1 });
+            }
+    
             // Verificar si el usuario existe antes de actualizarlo
             const existingUser = await model.findByEmail(email);
             if (existingUser.length === 0) {
                 return res.status(404).json({ message: "El usuario no existe", code: 1 });
             }
-
+    
             // Encriptar la nueva contraseña antes de actualizar el usuario
             const encryptedPassword = await utils.hashPassword(password);   
             // Actualizar el usuario con los campos proporcionados, incluida la contraseña encriptada
             await model.update({ email, password: encryptedPassword, role });
-
+    
             return res.json({ message: "Usuario actualizado correctamente", code: 0 });
         } catch (error: any) {
             // Manejar errores

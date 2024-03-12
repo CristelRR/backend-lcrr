@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usuarioController = void 0;
+const validator_1 = __importDefault(require("validator"));
 const usuarioModelo_1 = __importDefault(require("../models/usuarioModelo"));
 const utils_1 = require("../utils/utils");
 class UsuarioController {
@@ -59,6 +60,10 @@ class UsuarioController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { email, password, role } = req.body;
+                // Verificar si algún campo está vacío
+                if (validator_1.default.isEmpty(email.trim()) || validator_1.default.isEmpty(password.trim()) || validator_1.default.isEmpty(role.trim())) {
+                    return res.status(400).json({ message: "Los campos no pueden estar vacíos", code: 1 });
+                }
                 // Verificar si el usuario existe antes de actualizarlo
                 const existingUser = yield usuarioModelo_1.default.findByEmail(email);
                 if (existingUser.length === 0) {
