@@ -8,13 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.utils = void 0;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class Utils {
     hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const salt = yield bcript.genSaltSync(10);
-            return yield bcript.hashSync(password, salt);
+            const salt = yield bcryptjs_1.default.genSaltSync(10);
+            return yield bcryptjs_1.default.hashSync(password, salt);
+        });
+    }
+    checkPassword(password, encryptedPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield bcryptjs_1.default.compareSync(password, encryptedPassword);
         });
     }
 }
+exports.utils = new Utils();
 //# sourceMappingURL=utils.js.map

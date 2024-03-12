@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authController = void 0;
 const validator_1 = __importDefault(require("validator"));
 const authModelo_1 = __importDefault(require("../models/authModelo"));
+const utils_1 = require("../utils/utils");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 /**
  * Método para validar Inicio de sesión
  * @param req Petición
@@ -35,7 +37,24 @@ class Authcontroller {
                 if (ltsUsers.length <= 0) {
                     return res.status(404).json({ message: "El usuario y/o contraseña es incorrecto", code: 1 });
                 }
-                return res.json({ message: "Autenticación correcta", code: 0 });
+                console.log(ltsUsers[0].username, ltsUsers[0].password);
+                let result = utils_1.utils.checkPassword(password, ltsUsers[0].password);
+                result.then((value) => {
+                    if (value) {
+                        const newUser = {
+                            email: ltsUsers[0].email,
+                            password: ltsUsers[0].password,
+                            role: ltsUsers[0].role
+                        };
+                        console.log(process.env.SECRET);
+                        const env = require('dotenv').config();
+                        let token = jsonwebtoken_1.default.sing(newUser, process.env.SECRET, { expiresIn: '1h' });
+                        return res.json({ message: "Autenticación correcta", code: 0 });
+                    }
+                    else {
+                        return res.json({ message: "Password Incorrecto", code: 1 });
+                    }
+                });
             }
             catch (error) {
                 return res.status(500).json({ message: `${error.message}` });
